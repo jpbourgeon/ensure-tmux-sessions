@@ -1,32 +1,32 @@
-# ensure-tmux-session
+# ensure-tmux-sessions
 
-Minimalisme assumé pour tmux.
-Un registre.  
-Un script.  
-Une ligne dans le shell.  
+Minimalism by design for tmux.  
+One registry.  
+One script.  
+One line in the shell.  
 
-Ce projet garantit une seule chose :
+This project guarantees a single thing:
 
-> les sessions tmux déclarées existent au login
+> declared tmux sessions exist at login
 
-Rien d’autre.
+Nothing more.
 
-Tmux reste utilisé normalement.
+Tmux remains used as usual.
 
-## Principe
+## Principle
 
-Tu déclares une liste de sessions.
+You declare a list of sessions.
 
-Au login SSH :
+At SSH login:
 
-- les sessions sont créées si absentes
-- aucune session n’est détruite
-- aucun état n’est modifié
-- tu es attaché à `main`
+- sessions are created if absent
+- no session is destroyed
+- no state is modified
+- you are attached to `main`
 
 ## Installation
 
-1. Copier le script :
+1. Copy the script:
 
 ```bash
 mkdir -p ~/.local/bin
@@ -34,7 +34,7 @@ cp ensure_tmux_sessions.sh ~/.local/bin/
 chmod +x ~/.local/bin/ensure_tmux_sessions.sh
 ```
 
-1. Ajouter au `.bash_profile` :
+1. Add to `.bash_profile`:
 
 ```bash
 if [[ -n "${SSH_CONNECTION:-}" ]] && [[ -z "${TMUX:-}" ]]; then
@@ -43,39 +43,39 @@ if [[ -n "${SSH_CONNECTION:-}" ]] && [[ -z "${TMUX:-}" ]]; then
 fi
 ```
 
-## Registre des sessions
+## Session registry
 
-Path recommandé:
+Recommended path:
 
 ```conf
 ~/.config/tmux/session_registry.conf
 ```
 
-Format :
+Format:
 
 ```conf
 session_name:path
 ```
 
-- `session_name` : obligatoire  
-- `path` : optionnel mais recommandé  
+- `session_name`: required  
+- `path`: optional but recommended  
 
-## Exemple
+## Example
 
 ```conf
-main:$HOME
-project_name:$HOME/repos/project_name/.tmux/session.sh
-another_session
+main
+project_name:/home/<user_name>/repos/project_name/.tmux/session.sh
+another_session:/home/<user_name>/another_session
 ```
 
-## Comportement
+## Behavior
 
-Pour chaque ligne du registre :
+For each line in the registry:
 
-- si la session existe → rien  
-- sinon :
-  - si `path` est un dossier existant → session créée dans ce répertoire
-  - si path est un script shell → il est exécuté pour initialiser la session
-  - sinon → session créée sans répertoire spécifique
+- if the session exists → nothing  
+- otherwise:
+  - if `path` is an existing directory → session is created in that directory
+  - if `path` is a shell script → it is executed to initialize the session
+  - otherwise → session is created without a specific working directory
 
-Aucune session existante n’est modifiée.
+No existing session is modified.
